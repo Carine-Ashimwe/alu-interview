@@ -1,33 +1,18 @@
 #!/usr/bin/python3
-
-
-"""
-Module: rain
-"""
+"""create an algorithm for calculating the rain"""
 
 
 def rain(walls):
-    """
-    Calculate the total trapped water between walls.
-    Args:
-    walls (list): list of non-negative integers representing wall heights
-    Returns:
-    int: total trapped water.
-    """
-
-    if len(walls) == 0:
+    """calculate how much water will be retained after it rains"""
+    if not walls or len(walls) < 3:
         return 0
-
     water = 0
-    n = len(walls)
-
-    for i in range(1, n - 1):
-        left_max = max(walls[:i])
-        right_max = max(walls[i + 1:])
-        current_height = walls[i]
-        min_boundary_height = min(left_max, right_max)
-
-        if min_boundary_height > current_height:
-            water += min_boundary_height - current_height
-
+    for i in range(1, len(walls) - 1):
+        left = walls[i]
+        for j in range(i):
+            left = max(left, walls[j])
+        right = walls[i]
+        for j in range(i + 1, len(walls)):
+            right = max(right, walls[j])
+        water += min(left, right) - walls[i]
     return water
